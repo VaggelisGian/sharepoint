@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:sharepoint/edittask.dart';
 
-class Tilestyle extends StatelessWidget {
+class Tilestyle extends StatefulWidget {
   final String task;
 
   Tilestyle({required this.task});
+
+  @override
+  _TilestyleState createState() => _TilestyleState();
+}
+
+class _TilestyleState extends State<Tilestyle> {
+  bool _isCompleted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +82,7 @@ class Tilestyle extends StatelessWidget {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => Edittask(task: task)),
+                              MaterialPageRoute(builder: (context) => Edittask(task: widget.task)),
                             );
                           },
                           child: Text(
@@ -98,15 +105,23 @@ class Tilestyle extends StatelessWidget {
               Positioned(
                 left: width * 0.05,
                 top: height * 0.03,
-                child: Container(
-                  width: width * 0.08,
-                  height: width * 0.08,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1.50, color: Color(0xFF071C55)),
-                      borderRadius: BorderRadius.circular(51),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _isCompleted = !_isCompleted;
+                    });
+                  },
+                  child: Container(
+                    width: width * 0.08,
+                    height: width * 0.08,
+                    decoration: ShapeDecoration(
+                      color: _isCompleted ? Colors.green : Colors.white,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 1.50, color: Color(0xFF071C55)),
+                        borderRadius: BorderRadius.circular(51),
+                      ),
                     ),
+                    child: _isCompleted ? Icon(Icons.check, color: Colors.white) : null,
                   ),
                 ),
               ),
@@ -114,14 +129,15 @@ class Tilestyle extends StatelessWidget {
                 left: width * 0.18,
                 top: height * 0.05,
                 child: Text(
-                  task,
+                  widget.task,
                   style: TextStyle(
-                    color: Color(0xFF071C55),
+                    color: _isCompleted ? Color(0xFF8D8D8D) : Color(0xFF071C55),
                     fontSize: 16,
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w500,
                     height: 0.06,
-                    decoration: TextDecoration.none,
+                    decoration: _isCompleted ? TextDecoration.lineThrough : TextDecoration.none,
+                    decorationColor: _isCompleted ? Color(0xFF8D8D8D) : null,
                   ),
                 ),
               ),

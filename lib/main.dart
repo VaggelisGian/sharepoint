@@ -271,7 +271,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               Positioned.fill(
-                top: height * 0.26,
+                top: height * 0.3,
                 bottom: height * 0.0,
                 child: FutureBuilder<List<String>>(
                   future: _fetchTasks(),
@@ -279,10 +279,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else if (snapshot.hasData && snapshot.data != null) {
-                      return ListView.builder(
+                      return ListView.separated(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Tilestyle(task: snapshot.data![index]);
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: EdgeInsets.only(top: 16.0),
+                          );
                         },
                       );
                     } else {
